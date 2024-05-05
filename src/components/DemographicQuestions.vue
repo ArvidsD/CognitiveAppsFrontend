@@ -203,7 +203,7 @@ export default {
       const initialData = {test_taker: this.formData.test_taker};
       axios.post(url, initialData)
           .then(response => {
-            console.log('Demographic record initialized:', response.data);
+
 
             sessionStorage.setItem('demographicsInitialized', 'true');
           })

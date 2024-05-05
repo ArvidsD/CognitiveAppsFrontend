@@ -49,7 +49,7 @@ export default {
       axios.post(apiUrl, this.form)
           .then(response => {
             sessionStorage.setItem('testTakerId', response.data.id);
-            console.log(response.data);
+
           })
           .catch(error => {
             console.error("There was an error submitting the form:", error);
