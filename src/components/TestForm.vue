@@ -45,7 +45,7 @@ export default {
       sessionStorage.clear();
       this.form.session_id = `sess-${Date.now()}`;
 
-      const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + '/perceptiontest/testtaker/';
+      const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/testtaker/';
       axios.post(apiUrl, this.form)
           .then(response => {
             sessionStorage.setItem('testTakerId', response.data.id);

@@ -15,12 +15,12 @@ export default defineConfig({
     }
   },
 
-  server: {
-    https: {
-      key: fs.readFileSync('./localhost+2-key.pem'),
-      cert: fs.readFileSync('./localhost+2.pem')
-    }
-  }
+  // server: {
+  //   https: {
+  //     key: fs.readFileSync('./key.pem'),
+  //     cert: fs.readFileSync('./certificate.pem')
+  //   }
+  // }
 
 })
 

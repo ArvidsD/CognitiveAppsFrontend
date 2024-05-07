@@ -199,7 +199,7 @@ export default {
     },
 
     initializeDemographics() {
-      const url = import.meta.env.VITE_DJANGO_SERVER_URL + `/perceptiontest/submitdemographic/`;
+      const url = import.meta.env.VITE_DJANGO_SERVER_URL + `perceptiontest/submitdemographic/`;
       const initialData = {test_taker: this.formData.test_taker};
       axios.post(url, initialData)
           .then(response => {
@@ -247,7 +247,7 @@ export default {
         delete dataToSend.other_profession;
 
 
-        const url = import.meta.env.VITE_DJANGO_SERVER_URL + `/perceptiontest/submitdemographic/${this.formData.test_taker}/`;
+        const url = import.meta.env.VITE_DJANGO_SERVER_URL + `perceptiontest/submitdemographic/${this.formData.test_taker}/`;
         axios.put(url, dataToSend)
             .then(response => {
               alert('Paldies par piedalīšanos pētījumā, lai Jums jauka diena!');

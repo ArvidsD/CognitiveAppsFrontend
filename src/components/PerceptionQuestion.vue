@@ -47,6 +47,8 @@ export default {
   components: {DegreePicker},
   data() {
     return {
+      questions: [],
+      currentQuestionIndex: 0,
       question: null,
       degrees: 0,
       message: '',
@@ -54,35 +56,43 @@ export default {
     };
   },
   mounted() {
-    const lastAnsweredQuestionId = sessionStorage.getItem('lastAnsweredQuestionId') || null;
-    this.fetchNextQuestion(lastAnsweredQuestionId);
+    this.fetchQuestions();
   },
   methods: {
-    fetchNextQuestion(lastAnsweredQuestionId) {
-      let url = import.meta.env.VITE_DJANGO_SERVER_URL + '/perceptiontest/next_question/';
-      if (lastAnsweredQuestionId) {
-        url += `${lastAnsweredQuestionId}/`;
-      }
-      axios.get(url)
+    fetchQuestions() {
+      axios.get(import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/question_ids/')
           .then(response => {
-            if (response.data.message === "finished") {
-
-              this.message = "Paldies, ka piedalījāties testā!";
-              this.question = null; // Tīrīt jautājumu
-              sessionStorage.setItem('isTestCompleted', 'true');
-              this.$emit('test-completed');
-            } else {
-              this.question = response.data;
-              this.degrees = 0;
-              this.message = '';
-              this.startTime = Date.now();
-            }
+            this.questions = response.data;
+            console.log('Loaded questions:', this.questions); // Pievienojiet šo, lai redzētu, kādas ir ielādētās vērtības
+            this.loadNextQuestion();
           })
           .catch(error => {
-            console.error("Error fetching the question:", error);
-            this.message = 'Diemžēl notika kļūda, mēģiniet vēlāk.';
+            console.error("Error fetching question IDs:", error);
+            this.message = 'Diemžēl notika kļūda jautājumu ielādēšanā.';
           });
     },
+
+    loadNextQuestion() {
+      if (this.currentQuestionIndex < this.questions.length) {
+        const questionId = this.questions[this.currentQuestionIndex].id; // Pievērsiet uzmanību, kā iegūstat ID
+        axios.get(`${import.meta.env.VITE_DJANGO_SERVER_URL}perceptiontest/question/${questionId}/`)
+            .then(response => {
+              this.question = response.data;
+              this.degrees = 0;
+              this.startTime = Date.now();
+              this.currentQuestionIndex++; // Palielināt indeksu šeit, lai nodrošinātu, ka nākamais zvans būs jaunam jautājumam
+            })
+            .catch(error => {
+              console.error("Error fetching the question:", error);
+              this.message = 'Diemžēl notika kļūda jautājuma ielādēšanā.';
+            });
+      } else {
+        this.message = "Paldies, ka piedalījāties testā!";
+        this.question = null;
+        this.$emit('test-completed');
+      }
+    },
+
     submitAnswer() {
       if (this.degrees < 0 || this.degrees > 360) {
         this.message = 'Lūdzu, ievadiet derīgu leņķi no 0 līdz 360 grādiem.';
@@ -103,8 +113,7 @@ export default {
       axios.post(import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/submit_answer/', answerData)
           .then(response => {
             this.message = "Atbilde veiksmīgi iesniegta!";
-            sessionStorage.setItem('lastAnsweredQuestionId', this.question.id);
-            this.fetchNextQuestion(this.question.id);
+            this.loadNextQuestion(); // Turpināt ar nākamo jautājumu
           })
           .catch(error => {
             console.error("Error submitting the answer:", error);
@@ -123,7 +132,8 @@ export default {
   z-index: 2;
   margin-top: 10px;
 }
-.hidden{
+
+.hidden {
   display: none;
 }
 </style>

@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     loadImages() {
-      const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + '/perceptiontest/imageobjects/';
+      const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/imageobjects/';
       axios.get(apiUrl).then(response => {
         this.images = response.data;
         this.drawImages();
@@ -41,7 +41,7 @@ export default {
             context.drawImage(imageObj, img.x_coordinate, img.y_coordinate, 100, 100);
           };
 
-          imageObj.src = import.meta.env.VITE_DJANGO_SERVER_URL + `/${img.image_url}`;
+          imageObj.src = import.meta.env.VITE_DJANGO_SERVER_URL + `${img.image_url}`;
         });
       }
     }
