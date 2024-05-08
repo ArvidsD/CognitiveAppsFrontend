@@ -56,15 +56,22 @@ export default {
     };
   },
   mounted() {
-    this.fetchQuestions();
+    if (sessionStorage.getItem('questions') && sessionStorage.getItem('currentQuestionIndex')) {
+      this.questions = JSON.parse(sessionStorage.getItem('questions'));
+      this.currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex'));
+      this.loadCurrentQuestion();  // Šī funkcija tiek izsaukta, lai ielādētu jautājumu pēc indeksa
+    } else {
+      this.fetchQuestions();
+    }
   },
   methods: {
     fetchQuestions() {
       axios.get(import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/question_ids/')
           .then(response => {
             this.questions = response.data;
-            console.log('Loaded questions:', this.questions); // Pievienojiet šo, lai redzētu, kādas ir ielādētās vērtības
-            this.loadNextQuestion();
+            sessionStorage.setItem('questions', JSON.stringify(this.questions));
+            sessionStorage.setItem('currentQuestionIndex', '0'); // Sākotnēji uzstādīt indeksu uz 0
+            this.loadCurrentQuestion();
           })
           .catch(error => {
             console.error("Error fetching question IDs:", error);
@@ -73,24 +80,32 @@ export default {
     },
 
     loadNextQuestion() {
+      this.currentQuestionIndex++; // Palielināt indeksu pirms jautājuma ielādes
       if (this.currentQuestionIndex < this.questions.length) {
-        const questionId = this.questions[this.currentQuestionIndex].id; // Pievērsiet uzmanību, kā iegūstat ID
-        axios.get(`${import.meta.env.VITE_DJANGO_SERVER_URL}perceptiontest/question/${questionId}/`)
-            .then(response => {
-              this.question = response.data;
-              this.degrees = 0;
-              this.startTime = Date.now();
-              this.currentQuestionIndex++; // Palielināt indeksu šeit, lai nodrošinātu, ka nākamais zvans būs jaunam jautājumam
-            })
-            .catch(error => {
-              console.error("Error fetching the question:", error);
-              this.message = 'Diemžēl notika kļūda jautājuma ielādēšanā.';
-            });
+        sessionStorage.setItem('currentQuestionIndex', this.currentQuestionIndex.toString()); // Atjaunināt indeksu sessionStorage
+        this.loadCurrentQuestion();
       } else {
-        this.message = "Paldies, ka piedalījāties testā!";
-        this.question = null;
-        this.$emit('test-completed');
+        this.endTest();
       }
+    },
+    endTest() {
+      this.message = "Paldies, ka piedalījāties testā!";
+      this.question = null;
+      this.$emit('test-completed');
+    },
+
+    loadCurrentQuestion() {
+      const questionId = this.questions[this.currentQuestionIndex].id;
+      axios.get(`${import.meta.env.VITE_DJANGO_SERVER_URL}perceptiontest/question/${questionId}/`)
+          .then(response => {
+            this.question = response.data;
+            this.degrees = 0;
+            this.startTime = Date.now();
+          })
+          .catch(error => {
+            console.error("Error fetching the question:", error);
+            this.message = 'Diemžēl notika kļūda jautājuma ielādēšanā.';
+          });
     },
 
     submitAnswer() {
