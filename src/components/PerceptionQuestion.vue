@@ -2,8 +2,8 @@
   <div>
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <p v-if="question" class="text-center">Iedomājies, ka esi <strong>{{ question.object1.name }}</strong> un
-          skaties uz
+        <p v-if="question" class="text-center">Iedomājies, ka esi objekts: <strong>{{ question.object1.name }}</strong> un
+          skaties uz objektu:
           <strong>{{ question.object2.name }}</strong>,
           kādā
           leņķī atrodas <strong>{{ question.object3.name }}?</strong></p>

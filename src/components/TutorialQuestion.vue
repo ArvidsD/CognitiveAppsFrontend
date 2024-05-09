@@ -7,7 +7,7 @@
             Your browser does not support the canvas element.
           </canvas>
         </div>
-        <p v-if="question">Iedomājies, ka esi <strong>{{ question.object1.name }}</strong> un skaties uz
+        <p v-if="question">Iedomājies, ka esi objekts: <strong>{{ question.object1.name }}</strong> un skaties uz objektu:
           <strong>{{ question.object2.name }}</strong>,
           kādā leņķī atrodas <strong>{{ question.object3.name }}?</strong></p>
         <div class="d-flex flex-column align-items-center "><p v-if="question" style="height: 0px;">
@@ -52,18 +52,18 @@ export default {
     return {
       question: {
         id: 1,
-        object1: {name: "Koks", x: 50, y: 50},
-        object2: {name: "Māja", x: 100, y: 150},
-        object3: {name: "Auto", x: 60, y: 200},
-        correct_angle: 120
+        object1: {name: "Koks", x: 172, y: 125},
+        object2: {name: "Māja", x: 190, y: 366},
+        object3: {name: "Auto", x: 83, y: 240},
+        correct_angle: 41
       },
       degrees: 0,
       message: '',
       images: [
-        {src: 'koks.png', x: 50, y: 50},
-        {src: 'maja.png', x: 100, y: 150},
-        {src: 'mašīna.png', x: 60, y: 200},
-        {src: 'puķe.png', x: 200, y: 75}
+        {src: 'koks.png', x: 172, y: 125},
+        {src: 'maja.png', x: 190, y: 366},
+        {src: 'mašīna.png', x: 83, y: 240},
+        {src: 'puķe.png', x: 453, y: 322}
       ]
     };
   },
@@ -89,7 +89,7 @@ export default {
         this.message = 'Lūdzu, ievadiet derīgu leņķi no 0 līdz 360 grādiem.';
         return;
       }
-      this.message = `Tu ievadīji ${this.degrees} grādus. Pareizā atbilde ir ${this.question.correct_angle} grādi.`;
+      this.message = `Jūs ievadījāt ${this.degrees} grādus. Pareizā atbilde ir ${this.question.correct_angle} grādi.`;
     }
   }
 }
