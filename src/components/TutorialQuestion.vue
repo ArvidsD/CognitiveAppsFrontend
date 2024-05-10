@@ -80,7 +80,7 @@ export default {
           imageObj.onload = () => {
             context.drawImage(imageObj, img.x, img.y, 100, 100);
           };
-          imageObj.src = `/${img.src}`;
+          imageObj.src = `/perspective-test/${img.src}`;
         });
       }
     },
