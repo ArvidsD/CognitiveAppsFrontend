@@ -8,7 +8,10 @@
           <option value="">Lūdzu izvēlieties...</option>
           <option value="Male">Vīrietis</option>
           <option value="Female">Sieviete</option>
+          <option value="Other">Cits</option>
         </select>
+        <input v-if="formData.gender === 'Other'" v-model="formData.other_gender" placeholder="Norādiet lūdzu dzimumu"
+               class="form-control mt-2" @input="clearError('gender')"/>
         <div v-if="errors.gender" class="alert alert-danger mt-2">{{ errors.gender }}</div>
       </div>
 
@@ -87,6 +90,7 @@
           <option value="">Lūdzu izvēlieties...</option>
           <option value="Left">Kreilis</option>
           <option value="Right">Labrocis</option>
+          <option value="Both">Abas</option>
         </select>
         <div v-if="errors.dominant_hand" class="alert alert-danger mt-2">{{ errors.dominant_hand }}</div>
       </div>
@@ -125,6 +129,8 @@ export default {
         field_of_education: '',
         other_field: '',
         device_used: '',
+        other_gender: '',
+
       },
       educationOptions: [
         {id: 1, name: "Pamatskola"},
@@ -149,6 +155,13 @@ export default {
     };
   },
   mounted() {
+    const customId = sessionStorage.getItem('customId');
+    if (customId) {
+      alert('Paldies par piedalīšanos pētījumā, lai Jums jauka diena!');
+      sessionStorage.clear();
+      this.$router.push('/');
+      return;
+    }
     if (!sessionStorage.getItem('demographicsInitialized')) {
       this.initializeDemographics();
     }

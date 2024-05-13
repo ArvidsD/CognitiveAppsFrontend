@@ -28,6 +28,7 @@
 <script>
 import axios from 'axios';
 import TutorialQuestion from "@/components/TutorialQuestion.vue";
+import {useRoute} from 'vue-router';
 
 export default {
   components: {TutorialQuestion},
@@ -35,26 +36,32 @@ export default {
     return {
       form: {
         takenTest: 'Perception test',
-        session_id: ''
+        session_id: '',
+        custom_id: '',
       }
     };
   },
 
   methods: {
     submitForm() {
+      const customId = this.$route.query.custom_id || '';
+      this.form.custom_id = customId;
       sessionStorage.clear();
       this.form.session_id = `sess-${Date.now()}`;
 
       const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/testtaker/';
+
       axios.post(apiUrl, this.form)
           .then(response => {
             sessionStorage.setItem('testTakerId', response.data.id);
-
+            if (customId) {
+              sessionStorage.setItem('customId', customId);
+            }
+            this.$emit('form-submitted');
           })
           .catch(error => {
             console.error("There was an error submitting the form:", error);
           });
-      this.$emit('form-submitted');
     }
   }
 }

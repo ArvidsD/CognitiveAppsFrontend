@@ -2,11 +2,12 @@
   <div>
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <p v-if="question" class="text-center">Iedomājies, ka esi objekts: <strong>{{ question.object1.name }}</strong> un
-          skaties uz objektu:
-          <strong>{{ question.object2.name }}</strong>,
-          kādā
-          leņķī atrodas <strong>{{ question.object3.name }}?</strong></p>
+        <p v-if="question" class="text-center">Iedomājieties, ka stāvat pie <strong>{{
+            question.object1.name_where
+          }}</strong> un
+          esat vērsts pret
+          <strong>{{ question.object2.name_to }}</strong>.
+          Norādiet uz <strong>{{ question.object3.name_point_to }}?</strong>.</p>
         <div class="d-flex flex-column align-items-center"><p v-if="question" style="height: 0px;">
           {{ question.object2.name }}</p>
           <p style="height: 0px;
@@ -21,6 +22,7 @@
           <degree-picker active-color="black" :modelValue="degrees" width="220px" step="360"
                          @update:modelValue="degrees = $event"/>
           <div class="vl"></div>
+
         </div>
         <div class="row align-items-center mt-2 justify-content-center">
           <div class="col-auto">
@@ -149,6 +151,10 @@ export default {
 }
 
 .hidden {
+  display: none;
+}
+
+#app > div > div > div.mb-5 > div > div > div.d-flex.justify-content-center > div:nth-child(1) > div > div > div > div > span > span {
   display: none;
 }
 </style>
