@@ -158,7 +158,10 @@ export default {
   display: none;
 }
 
-.degree-picker-clock__item[data-v-c34b5449]{
+#app > div > div > div > div > div > div.d-flex.justify-content-center > div:nth-child(1) > div > div > div > div > span > span{
+  display: none;
+}
+.degree-picker-clock__item[data-v-c34b5449] {
   width: 0 !important;
 }
 </style>
