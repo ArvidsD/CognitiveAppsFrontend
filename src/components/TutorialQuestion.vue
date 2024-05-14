@@ -9,12 +9,12 @@
           Norādiet uz <strong>{{ question.object3.name }}</strong>.</p>
         <div class="d-flex flex-column align-items-center "><p v-if="question" style="height: 0px;">
 
-          {{ question.object2.name }}</p>
+          zieds</p>
 
           <p style="height: 0px;
         position: relative;
         top: 132px;
-        z-index: 100;" v-if="question">{{ question.object1.name }}</p>
+        z-index: 100;" v-if="question">stop zīme</p>
         </div>
         <div class="d-flex justify-content-center">
 
