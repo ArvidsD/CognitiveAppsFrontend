@@ -157,9 +157,9 @@ export default {
   mounted() {
     const customId = sessionStorage.getItem('customId');
     if (customId) {
-      alert('Paldies par piedalīšanos pētījumā, lai Jums jauka diena!');
+
       sessionStorage.clear();
-      this.$router.push('/');
+      this.$router.push('/test-completed');
       return;
     }
     if (!sessionStorage.getItem('demographicsInitialized')) {
@@ -263,9 +263,9 @@ export default {
         const url = import.meta.env.VITE_DJANGO_SERVER_URL + `perceptiontest/submitdemographic/${this.formData.test_taker}/`;
         axios.put(url, dataToSend)
             .then(response => {
-              alert('Paldies par piedalīšanos pētījumā, lai Jums jauka diena!');
+
               sessionStorage.clear();
-              this.$router.push('/');
+              this.$router.push('/test-completed');
             })
             .catch(error => {
               console.error('Error submitting the data:', error);
