@@ -7,7 +7,7 @@
           }}</strong> un
           esat vērsts pret
           <strong>{{ question.object2.name_to }}</strong>.
-          Norādiet uz <strong>{{ question.object3.name_point_to }}?</strong>.</p>
+          Norādiet uz <strong>{{ question.object3.name_point_to }}</strong>.</p>
         <div class="d-flex flex-column align-items-center"><p v-if="question" style="height: 0px;">
           {{ question.object2.name }}</p>
           <p style="height: 0px;
@@ -156,5 +156,9 @@ export default {
 
 #app > div > div > div.mb-5 > div > div > div.d-flex.justify-content-center > div:nth-child(1) > div > div > div > div > span > span {
   display: none;
+}
+
+.degree-picker-clock__item[data-v-c34b5449]{
+  width: 0 !important;
 }
 </style>

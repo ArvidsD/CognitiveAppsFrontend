@@ -14,7 +14,7 @@
       </ul>
     </p>
 
-    <TutorialQuestion class="mb-5"/>
+    <TutorialQuestion class="mb-3"/>
 
 
     <form @submit.prevent="submitForm">
