@@ -7,6 +7,11 @@
         <p v-if="question">Iedomājieties, ka stāvat pie <strong>{{ question.object1.name }}</strong> un esat vērsts pret
           <strong>{{ question.object2.name }}</strong>.
           Norādiet uz <strong>{{ question.object3.name }}</strong>.</p>
+        <div class="text-center">
+          <p>Pareizā atbilde</p>
+          <img src="/correct.png">
+          <p>Izmēģiniet atlikt atbildi uz apļa!</p>
+        </div>
         <div class="d-flex flex-column align-items-center "><p v-if="question" style="height: 0px;">
 
           zieds</p>
@@ -16,11 +21,7 @@
         top: 132px;
         z-index: 100;" v-if="question">stop zīme</p>
         </div>
-        <div class="text-center">
-          <p>Pareizā atbilde</p>
-          <img src="/correct.png">
-          <p>Izmēģiniet atlikt atbildi uz apļa!</p>
-        </div>
+
         <div class="d-flex justify-content-center">
 
           <degree-picker active-color="black" :modelValue="degrees" width="220px"
