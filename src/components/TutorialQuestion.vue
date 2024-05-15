@@ -17,7 +17,7 @@
         z-index: 100;" v-if="question">stop zīme</p>
         </div>
         <div class="text-center">
-          <p>Pareizās atbilde</p>
+          <p>Pareizā atbilde</p>
           <img src="/correct.png">
           <p>Izmēģiniet atlikt atbildi uz apļa!</p>
         </div>
