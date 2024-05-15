@@ -13,10 +13,7 @@
         <li>Jūsu uzdevums būs atzīmēt leņķi uz riņķa līnijas, parādot virzienu uz trešo objektu attiecībā no sevis.</li>
       </ul>
     </p>
-    <div class="text-center">
-      <p>Pareizās atbildes atlikšanas piemērs</p>
-      <img src="/correct.png">
-    </div>
+
     <h2 class="text-center">Testa piemērs</h2>
     <TutorialQuestion class="mb-3"/>
 

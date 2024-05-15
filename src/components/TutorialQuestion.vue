@@ -16,19 +16,24 @@
         top: 132px;
         z-index: 100;" v-if="question">stop zīme</p>
         </div>
+        <div class="text-center">
+          <p>Pareizās atbilde</p>
+          <img src="/correct.png">
+          <p>Izmēģiniet atlikt atbildi uz apļa!</p>
+        </div>
         <div class="d-flex justify-content-center">
 
           <degree-picker active-color="black" :modelValue="degrees" width="220px"
                          @update:modelValue="degrees = $event" step="360"></degree-picker>
           <div class="vl"></div>
         </div>
-        <div class="row align-items-center mt-2">
-          <div class="col">
-            <input disabled type="number" class="form-control" v-model.number="degrees" :disabled="!question" min="0"
+        <div class="row align-items-center mt-2 justify-content-center">
+          <div class="col-auto">
+            <input disabled type="number" class="form-control hidden" v-model.number="degrees" :disabled="!question"
+                   min="0"
                    max="360"
                    placeholder="Ievadi leņķi (0-360)"/>
-          </div>
-          <div class="col-auto">
+
             <button class="btn btn-secondary" @click="submitAnswer" :disabled="!question || degrees === null">Izmēģināt
               atbildi
             </button>
