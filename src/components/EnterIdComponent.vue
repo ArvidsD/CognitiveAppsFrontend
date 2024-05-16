@@ -9,6 +9,7 @@
       Ģirts Ābele, dzimis Jelgavā, tel nr. 29784452 >> kods <strong>JELĢĀ52</strong>
     </p>
     <input :value="customId" @input="updateCustomId" type="text" class="form-control" placeholder="Ievadiet kodu">
+    <div v-if="error" class="alert alert-danger mt-2">{{ error }}</div>
   </div>
 </template>
 
@@ -18,12 +19,17 @@ export default {
     customId: {
       type: String,
       default: ''
+    },
+    error: {
+      type: String,
+      default: ''
     }
   },
   methods: {
     updateCustomId(event) {
       const uppercasedValue = event.target.value.toUpperCase();
       this.$emit('update:customId', uppercasedValue);
+      this.$emit('clear-error');
     }
   }
 }

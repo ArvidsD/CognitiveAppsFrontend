@@ -1,5 +1,6 @@
 <template>
-  <EnterIdComponent v-if="showEnterId" :customId="form.custom_id" @update:customId="updateCustomId" class="mb-3"/>
+  <EnterIdComponent v-if="showEnterId" :customId="form.custom_id" :error="errors.custom_id"
+                    @update:customId="updateCustomId" @clear-error="clearError('custom_id')" class="mb-3"/>
   <div>
     <h1 class="text-center">Uzdevums</h1>
     <p>
@@ -21,7 +22,7 @@
 
     <form @submit.prevent="submitForm">
       <div class="text-center">
-        <button type="submit" class="btn btn-secondary mb-5" >Sākt Testu</button>
+        <button type="submit" class="btn btn-secondary mb-5">Sākt Testu</button>
       </div>
     </form>
   </div>
@@ -45,7 +46,7 @@ export default {
     });
     const showEnterId = ref(false);
     const route = useRoute();
-
+    const errors = ref({});
     onMounted(() => {
       showEnterId.value = route.query.enter_id === 'true';
       const customId = route.query.custom_id || '';
@@ -53,12 +54,30 @@ export default {
         form.value.custom_id = customId;
       }
     });
+    const clearError = (field) => {
+      errors.value[field] = '';
+    };
 
+    const validateForm = () => {
+      let isValid = true;
+      errors.value = {};
+
+      if (showEnterId.value && !form.value.custom_id) {
+        errors.value.custom_id = 'Šis lauks ir obligāts!';
+        isValid = false;
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+
+      return isValid;
+    };
     const updateCustomId = (value) => {
       form.value.custom_id = value;
     };
 
     const submitForm = () => {
+      if (!validateForm()) {
+        return;
+      }
       const customId = route.query.custom_id || form.value.custom_id;
       form.value.custom_id = customId;
       sessionStorage.clear();
@@ -83,7 +102,10 @@ export default {
       form,
       showEnterId,
       updateCustomId,
-      submitForm
+      clearError,
+      validateForm,
+      submitForm,
+      errors
     };
   }
 }
