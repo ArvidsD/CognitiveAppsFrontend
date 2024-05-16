@@ -1,4 +1,5 @@
 <template>
+  <EnterIdComponent v-if="showEnterId" :customId="form.custom_id" @update:customId="updateCustomId" class="mb-3"/>
   <div>
     <h1 class="text-center">Uzdevums</h1>
     <p>
@@ -20,7 +21,7 @@
 
     <form @submit.prevent="submitForm">
       <div class="text-center">
-        <button type="submit" class="btn btn-secondary mb-5">Sākt Testu</button>
+        <button type="submit" class="btn btn-secondary mb-5" >Sākt Testu</button>
       </div>
     </form>
   </div>
@@ -29,45 +30,65 @@
 <script>
 import axios from 'axios';
 import TutorialQuestion from "@/components/TutorialQuestion.vue";
+import EnterIdComponent from "@/components/EnterIdComponent.vue";
 import {useRoute} from 'vue-router';
+import {ref, onMounted} from 'vue';
 
 export default {
-  components: {TutorialQuestion},
-  data() {
-    return {
-      form: {
-        takenTest: 'Perception test',
-        session_id: '',
-        custom_id: '',
-      }
-    };
-  },
+  components: {TutorialQuestion, EnterIdComponent},
+  emits: ['form-submitted'],
+  setup(props, {emit}) {
+    const form = ref({
+      takenTest: 'Perception test',
+      session_id: '',
+      custom_id: '',
+    });
+    const showEnterId = ref(false);
+    const route = useRoute();
 
-  methods: {
-    submitForm() {
-      const customId = this.$route.query.custom_id || '';
-      this.form.custom_id = customId;
+    onMounted(() => {
+      showEnterId.value = route.query.enter_id === 'true';
+      const customId = route.query.custom_id || '';
+      if (customId) {
+        form.value.custom_id = customId;
+      }
+    });
+
+    const updateCustomId = (value) => {
+      form.value.custom_id = value;
+    };
+
+    const submitForm = () => {
+      const customId = route.query.custom_id || form.value.custom_id;
+      form.value.custom_id = customId;
       sessionStorage.clear();
-      this.form.session_id = `sess-${Date.now()}`;
+      form.value.session_id = `sess-${Date.now()}`;
 
       const apiUrl = import.meta.env.VITE_DJANGO_SERVER_URL + 'perceptiontest/testtaker/';
 
-      axios.post(apiUrl, this.form)
+      axios.post(apiUrl, form.value)
           .then(response => {
             sessionStorage.setItem('testTakerId', response.data.id);
             if (customId) {
               sessionStorage.setItem('customId', customId);
             }
-            this.$emit('form-submitted');
+            emit('form-submitted');
           })
           .catch(error => {
             console.error("There was an error submitting the form:", error);
           });
-    }
+    };
+
+    return {
+      form,
+      showEnterId,
+      updateCustomId,
+      submitForm
+    };
   }
 }
 </script>
 
 <style>
-
+/* Add any styles you need here */
 </style>
